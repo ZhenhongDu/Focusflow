@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    
+    <!-- PWA 基础配置 -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="FocusFlow" />
+    <meta name="application-name" content="FocusFlow" />
+    <meta name="theme-color" content="#4f46e5" />
+    <meta name="msapplication-TileColor" content="#4f46e5" />
+    
+    <!-- SEO 和 PWA 描述 -->
+    <meta name="description" content="专注时间管理应用，帮助你更好地管理任务和时间" />
+    <meta name="keywords" content="任务管理,时间管理,专注,番茄钟,时间统计" />
+    
+    <title>FocusFlow: Task & Time Analyzer</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- 图标配置 -->
+    <link rel="icon" type="image/x-icon" href="/icon/focus_flow.ico">
+    
+    <!-- iOS 图标 - 多尺寸支持 -->
+    <link rel="apple-touch-icon" href="/icon/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icon/apple-touch-icon-180x180.png">
+    
+    <!-- iOS Safari 启动画面配置 -->
+    <meta name="apple-mobile-web-app-title" content="FocusFlow">
+    <link rel="apple-touch-startup-image" href="/icon/apple-touch-icon-180x180.png">
+    
+    <!-- Android Chrome -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon/pwa-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon/pwa-512x512.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'brand-primary': '#4f46e5',
+              'brand-secondary': '#6366f1',
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "recharts": "https://aistudiocdn.com/recharts@^3.3.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-slate-50">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

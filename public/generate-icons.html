@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA图标生成器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #4f46e5; }
+        .icon-preview {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .icon-item {
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #4338ca;
+        }
+        .info {
+            background: #e0e7ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 FocusFlow PWA 图标生成器</h1>
+        
+        <div class="info">
+            <p><strong>使用说明：</strong></p>
+            <ol>
+                <li>点击"生成所有图标"按钮</li>
+                <li>等待图标生成完成</li>
+                <li>点击每个图标下方的"下载"按钮保存到 <code>public/icon/</code> 目录</li>
+            </ol>
+        </div>
+
+        <button onclick="generateAllIcons()">🚀 生成所有图标</button>
+        
+        <div class="icon-preview" id="iconPreview"></div>
+    </div>
+
+    <script>
+        const sizes = [
+            { width: 64, height: 64, name: 'pwa-64x64.png' },
+            { width: 192, height: 192, name: 'pwa-192x192.png' },
+            { width: 512, height: 512, name: 'pwa-512x512.png' },
+            { width: 180, height: 180, name: 'apple-touch-icon-180x180.png' }
+        ];
+
+        async function generateAllIcons() {
+            const previewContainer = document.getElementById('iconPreview');
+            previewContainer.innerHTML = '<p>正在生成图标...</p>';
+            
+            try {
+                // 加载源图标
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                await new Promise((resolve, reject) => {
+                    img.onload = resolve;
+                    img.onerror = reject;
+                    img.src = '/icon/focusflow_icon_apple.png';
+                });
+
+                previewContainer.innerHTML = '';
+
+                // 生成每个尺寸
+                for (const size of sizes) {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = size.width;
+                    canvas.height = size.height;
+                    const ctx = canvas.getContext('2d');
+                    
+                    // 绘制图标
+                    ctx.drawImage(img, 0, 0, size.width, size.height);
+                    
+                    // 创建预览
+                    const iconItem = document.createElement('div');
+                    iconItem.className = 'icon-item';
+                    
+                    const previewCanvas = canvas.cloneNode(true);
+                    previewCanvas.style.width = '100px';
+                    previewCanvas.style.height = '100px';
+                    
+                    const label = document.createElement('p');
+                    label.textContent = `${size.width}x${size.height}`;
+                    
+                    const downloadBtn = document.createElement('button');
+                    downloadBtn.textContent = '下载';
+                    downloadBtn.onclick = () => downloadIcon(canvas, size.name);
+                    
+                    iconItem.appendChild(previewCanvas);
+                    iconItem.appendChild(label);
+                    iconItem.appendChild(downloadBtn);
+                    previewContainer.appendChild(iconItem);
+                }
+
+                // 生成 maskable icon (带安全区域)
+                await generateMaskableIcon(img, previewContainer);
+
+                alert('✅ 所有图标生成完成！请点击下载按钮保存。');
+            } catch (error) {
+                console.error('生成图标失败:', error);
+                previewContainer.innerHTML = '<p style="color: red;">❌ 生成失败: ' + error.message + '</p>';
+            }
+        }
+
+        async function generateMaskableIcon(img, container) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+            
+            // 填充背景色
+            ctx.fillStyle = '#4f46e5';
+            ctx.fillRect(0, 0, 512, 512);
+            
+            // 在中心绘制图标，留出安全区域（20%边距）
+            const padding = 512 * 0.1;
+            const iconSize = 512 - padding * 2;
+            ctx.drawImage(img, padding, padding, iconSize, iconSize);
+            
+            // 创建预览
+            const iconItem = document.createElement('div');
+            iconItem.className = 'icon-item';
+            
+            const previewCanvas = canvas.cloneNode(true);
+            previewCanvas.style.width = '100px';
+            previewCanvas.style.height = '100px';
+            
+            const label = document.createElement('p');
+            label.textContent = 'Maskable 512x512';
+            
+            const downloadBtn = document.createElement('button');
+            downloadBtn.textContent = '下载';
+            downloadBtn.onclick = () => downloadIcon(canvas, 'maskable-icon-512x512.png');
+            
+            iconItem.appendChild(previewCanvas);
+            iconItem.appendChild(label);
+            iconItem.appendChild(downloadBtn);
+            container.appendChild(iconItem);
+        }
+
+        function downloadIcon(canvas, filename) {
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+                URL.revokeObjectURL(url);
+            }, 'image/png');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+{
+  "name": "FocusFlow: Task & Time Analyzer",
+  "short_name": "FocusFlow",
+  "description": "专注时间管理应用，帮助你更好地管理任务和时间",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#4f46e5",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon/pwa-64x64.png",
+      "sizes": "64x64",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon/maskable-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon/apple-touch-icon-180x180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "新建任务",
+      "short_name": "新任务",
+      "description": "快速创建新任务",
+      "url": "/?action=new-task",
+      "icons": [
+        {
+          "src": "/icon/pwa-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "开始专注",
+      "short_name": "专注",
+      "description": "启动专注计时器",
+      "url": "/?action=start-focus",
+      "icons": [
+        {
+          "src": "/icon/pwa-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
